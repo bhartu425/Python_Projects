@@ -5,6 +5,7 @@ import webbrowser
 from datetime import datetime
 from currencyconverter import currency_converter
 from password_genrater import password_genrater
+import wikipedia
 
 def speak(audio):
     engine = pyttsx3.init()
@@ -18,7 +19,7 @@ def speak(audio):
 def wishme():
     now = datetime.now()
     current_time = int(now.strftime("%H"))
-    if current_time>=1 and current_time<12:
+    if current_time==24 and current_time>=1 and current_time<12:
         print('good morning')
         speak('good morning')
     elif current_time>=12 and current_time<=15:
@@ -100,6 +101,9 @@ if __name__ == "__main__":
             print(covert)
             speak(covert) 
             ###  using os.system() funtion ###
+        elif 'play music' in query:
+            speak('opening groove music')
+            os.system("start mswindowsmusic:")
         elif 'open notepad' in query or 'open the notepad' in query:
             speak('opening notepad')
             os.system('start notepad')
@@ -116,9 +120,18 @@ if __name__ == "__main__":
         elif 'open pictures' in query or 'open image' in query:
             speak('opening pictures folder')
             os.startfile(r'C:\Users\HACKER\pictures')
-        elif 'close pictures' in query or 'close image' in query or 'exit pictures' in query:
-            speak('closeing pictures folder')
-            os.system('taskkill /f /t /im explorer.exe && start explorer.exe')
+        elif 'open documents' in query:
+            speak('opening documents folder')
+            os.startfile(r'C:\Users\HACKER\documents')
+        elif 'open downloads' in query:
+            speak('opening downloads folder')
+            os.startfile(r'C:\Users\HACKER\downloads')
+        elif 'open music' in query:
+            speak('opening music folder')
+            os.startfile(r'C:\Users\HACKER\music')
+        elif 'open videos' in query:
+            speak('opening videos folder')
+            os.startfile(r'C:\Users\HACKER\videos')
             ### using webbrowser.open() ###
         elif 'open goole chrome' in query or 'open google' in query or 'open chrome' in query or 'open the google' in query:
             speak('opening google')
@@ -151,7 +164,20 @@ if __name__ == "__main__":
             speak('you computer will log off')
             os.system('shutdown/l')
             break
+        elif 'wikipedia' in query:
+            speak("searching from wikipedia")
+            query=query.replace('wikipedia',' ')
+            print('user search in wikipedia :',query)
+            try :
+                #wikipedia.search() gives the list of most relevant pages
+                result=wikipedia.search(query)
+                # in the wikipedia.summary() the sentences parameter will decide the how many lines you want
+                print('according to wikipedia :\n',wikipedia.summary(result[0],sentences=2))
+                speak('according to wikipedia')
+                speak(wikipedia.summary(result[0],sentences=2))
+            except Exception as e:
+                speak(e)
+                print('error:',e)
         else:
-            # print('please say again..')
             speak('the query that you ask to me , is not available in my database so i decide to redirect it into browser')
             webbrowser.open(query)
